@@ -1,11 +1,18 @@
 # TODO
 ------
-- [x] ~~***finished activity***~~ (hours spent) [date started : date finished]
-- [-] **started activity** (hours spent) [date started :]
-- [-] todo activity (hours spent) [:]
+- [x] ~~***finished_activity***~~ **(hours_spent)** ***[date_started : date_finished]***
+- [ ] **started_activity** **(hours_spent)** ***[date_started :]***
+- [ ] todo_activity 
 
 ------
-- [ ] flat_tjson.py 
-    - [ ] document properly the json flattening
-    - [ ] test it further
+- [ ] project structure
+- [ ] project behaviour
+- [ ] project methodology
+- [ ] **flat_tjson.py** **(5h)** ***[26/04/2025:]***
+    - [x] ~~**tree flattening algorithm**~~ **(5h)** ***[26/04/2025 :27/04/2025]***
+    - [ ] study literature for this type of algorithm
+    - [ ] refactor
+    - [ ] document properly
+    - [ ] tests
     - [ ] wrap module
+
