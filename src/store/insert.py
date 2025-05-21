@@ -1,4 +1,7 @@
 
+# TODO
+#   overload functions
+
 from concurrent.futures import ThreadPoolExecutor
 from itertools import (
         repeat,
@@ -41,23 +44,43 @@ def insert_df(df : DataFrame, cs : str, tb : str, th : int = 0) -> None:
     iter = zip_longest(repeat(con, n_rows), rows)
     SLOG.debug(f"Zipped iterator with connection objects and row values")
 
-    def init_cursor(iter):
-        SLOG.debug(f"init function args: {iter}")
-        cursor = iter[0].cursor()
-        return cursor.execute(query, iter[1])
+    if th == 0:
+        cursor = con.cursor()
+        for row in tqdm(rows):
+            try:
+                cursor.execute(query, row)
 
-    if th < 1:
-        try:
-            with ThreadPoolExecutor() as executor:
-                list(tqdm(executor.map(init_cursor, iter), total=n_rows, desc=f"Inserting rows into table {tb}: "))
-        except Exception as e:
-            SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
-        else:
-            con.commit()
-            SLOG.debug(f"Rows commited into table {tb}")
-        finally:
-            con.close()
-            SLOG.debug(f"Connection closed")
+            except Exception as e:
+                SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+            else:
+                con.commit()
+                SLOG.debug(f"Rows commited into table {tb}")
+
+            finally:
+                con.close()
+                SLOG.debug(f"Connection closed")
+                return
+
+    try:
+        def init_cursor(iter):
+            SLOG.debug(f"init function args: {iter}")
+            cursor = iter[0].cursor()
+            return cursor.execute(query, iter[1])
+
+        with ThreadPoolExecutor() as executor:
+            list(tqdm(executor.map(init_cursor, iter), total=n_rows, desc=f"Inserting rows into table {tb}: "))
+
+    except Exception as e:
+        SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+    else:
+        con.commit()
+        SLOG.debug(f"Rows commited into table {tb}")
+
+    finally:
+        con.close()
+        SLOG.debug(f"Connection closed")
 
 
 def insert_dtabular(b : dict, cs : str, tb : str, th : int = 0) -> None:
@@ -96,23 +119,108 @@ def insert_dtabular(b : dict, cs : str, tb : str, th : int = 0) -> None:
     iter = zip_longest(repeat(con, n_rows), rows)
     SLOG.debug(f"Zipped iterator with connection objects and row values")
 
-    def init_cursor(iter):
-        SLOG.debug(f"init function args: {iter}")
-        cursor = iter[0].cursor()
-        return cursor.execute(query, iter[1])
+    if th == 0:
+        cursor = con.cursor()
+        for row in tqdm(rows):
+            try:
+                cursor.execute(query, row)
 
-    if th < 1:
-        try:
-            with ThreadPoolExecutor() as executor:
-                list(tqdm(executor.map(init_cursor, iter), total=n_rows, desc=f"Inserting rows into table {tb}: "))
-        except Exception as e:
-            SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
-        else:
-            con.commit()
-            SLOG.debug(f"Rows commited into table {tb}")
-        finally:
-            con.close()
-            SLOG.debug(f"Connection closed")
+            except Exception as e:
+                SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+            else:
+                con.commit()
+                SLOG.debug(f"Rows commited into table {tb}")
+
+            finally:
+                con.close()
+                SLOG.debug(f"Connection closed")
+                return
+
+    try:
+        def init_cursor(iter):
+            SLOG.debug(f"init function args: {iter}")
+            cursor = iter[0].cursor()
+            return cursor.execute(query, iter[1])
+
+        with ThreadPoolExecutor() as executor:
+            list(tqdm(executor.map(init_cursor, iter), total=n_rows, desc=f"Inserting rows into table {tb}: "))
+
+    except Exception as e:
+        SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+    else:
+        con.commit()
+        SLOG.debug(f"Rows commited into table {tb}")
+
+    finally:
+        con.close()
+        SLOG.debug(f"Connection closed")
+
+
+def insert_ltabular(R : list[tuple], cs : str, tb : str, th : int = 0) -> None:
+    """Insert rows from a tabular dictionary buffer (b) into a DB, opening a connection
+    with it via a connection string (cs), multithreading, unless is specified to not 
+    thread it (threads = 1).
+
+    :param R : Buffer with data formatted as a matrix with tuples as rows
+    :param cs : Connection string to be used when connecting to DB
+    :param tb : Table from DB to be inserted 
+    :param th : Number of threads to be used
+    """
+
+    columns = ", ".join(R[0])
+    n_columns = len(R[0])
+    n_rows = len(R) - 1
+    values = ", ".join(repeat("?", n_columns))
+    SLOG.debug(f"DATAFRAME\n\tROWS : {n_rows}\n\tCOLUMNS : {columns}\n\tVALUES : {values}")
+
+    query = f"INSERT INTO {tb} ({columns}) VALUES ({values})"
+    SLOG.debug(f"Query : {query}")
+
+    con = connect(cs)
+    SLOG.debug(f"Connection established with {con}")
+
+    iter = zip_longest(repeat(con, n_rows), R[1:])
+    SLOG.debug(f"Zipped iterator with connection objects and row values")
+
+    if th == 0:
+        cursor = con.cursor()
+        for row in tqdm(R[1:]):
+            try:
+                cursor.execute(query, row)
+
+            except Exception as e:
+                SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+            else:
+                con.commit()
+                SLOG.debug(f"Rows commited into table {tb}")
+
+            finally:
+                con.close()
+                SLOG.debug(f"Connection closed")
+                return
+
+    try:
+        def init_cursor(iter):
+            SLOG.debug(f"init function args: {iter}")
+            cursor = iter[0].cursor()
+            return cursor.execute(query, iter[1])
+
+        with ThreadPoolExecutor() as executor:
+            list(tqdm(executor.map(init_cursor, iter), total=n_rows, desc=f"Inserting rows into table {tb}: "))
+
+    except Exception as e:
+        SLOG.exception(f"\n=============================================\n{e}\n=============================================\n")
+
+    else:
+        con.commit()
+        SLOG.debug(f"Rows commited into table {tb}")
+
+    finally:
+        con.close()
+        SLOG.debug(f"Connection closed")
 
 
 if __name__ == "__main__":

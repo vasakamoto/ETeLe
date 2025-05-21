@@ -86,19 +86,76 @@ def flat_json(l: list[tuple], R: list, i: int=0) -> None:
 
 
 if __name__ == "__main__":
-    path = "C:/Pogramacao/rascunhos/pitao/json_mocks"
-    for entry in os.listdir(path):
-        print(f"\n\nFILE {entry}")
-        with open(os.path.join(path, entry), "r") as file:
-            jason =  json.load(file)
+    jason = {
+        "links": [
+        {
+            "rel": "self",
+            "uri": "https://sandboxapi.deere.com/platform/partnerships"
+        }
+        ],
+        "total": 2,
+        "values": [
+            {
+                "links": [
+                    {
+                        "rel": "self",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/2b1b34fc-2cc3-4a57-8120-28ea912113fc"
+                    },
+                    {
+                        "rel": "fromPartnership",
+                        "uri": "https://sandboxapi.deere.com/platform/organizations/0987"
+                    },
+                    {
+                        "rel": "toPartnership",
+                        "uri": "https://sandboxapi.deere.com/platform/organizations/1234"
+                    },
+                    {
+                        "rel": "permissions",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/2b1b34fc-2cc3-4a57-8120-28ea912113fc/permissions"
+                    },
+                    {
+                        "rel": "contactInvitation",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/c3cf441b-d814-400b-842c-44fb7ecad703"
+                    }
+                ],
+                "status": "ACCEPTED"
+        },
+            {
+                "links": [
+                    {
+                        "rel": "self",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/4ecbb066-bd4c-485e-bcf8-99a470364d5a"
+                    },
+                    {
+                        "rel": "fromPartnership",
+                        "uri": "https://sandboxapi.deere.com/platform/organizations/7654"
+                    },
+                    {
+                        "rel": "toPartnership",
+                        "uri": "https://sandboxapi.deere.com/platform/organizations/1234"
+                    },
+                    {
+                        "rel": "permissions",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/4ecbb066-bd4c-485e-bcf8-99a470364d5a/permissions"
+                    },
+                    {
+                        "rel": "contactInvitation",
+                        "uri": "https://sandboxapi.deere.com/platform/partnerships/47f27b3a-2639-4bc4-a1c3-33dc0bce32ac"
+                    }
+                ],
+                "status": "ACCEPTED"
+            }
+        ]
+    }
 
-        l = list(jason.items())
-        flat_json(l, R)
-        for r in R:
-            print("\n________________________________________________\n")
-            print(r)
 
-        R.clear()
-        print("\n################################################\n")
-            #for t in r:
-            #    print(t)
+    l = list(jason.items())
+    flat_json(l, R)
+    for r in R[:-11]:
+        print("\n________________________________________________\n")
+        print(r)
+
+    R.clear()
+    print("\n################################################\n")
+        #for t in r:
+        #    print(t)

@@ -3,7 +3,10 @@
 #   Validate if every row have the same number of elements
 #   Test properly
 
-def transpose_flat_json(R : list[list[tuple]]) -> list[tuple]:
+from ..utils.logger_config import SLOG
+
+
+def transpose_flat_json(R : list[list[tuple]]) -> None:
     """Receive a list of list of tuples with pairs of key and values returning a list
     of rows, the first row being the columns headers.
 
@@ -37,9 +40,11 @@ def transpose_flat_json(R : list[list[tuple]]) -> list[tuple]:
         for i in range(l_length):
             row.append(l[i][1])
 
-        buffer.append(row)
+        buffer.append(tuple(row))
 
-    return buffer
+
+    R.clear()
+    R.extend(buffer)
 
 
 if __name__ == "__main__":
