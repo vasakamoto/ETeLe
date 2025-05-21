@@ -71,7 +71,7 @@ def _multiply_tree(l: list[tuple], R: list[list], i: int=0):
         return
 
 
-def flat_json(l: list[tuple], R: list[list[tuple]], i: int=0) -> None:
+def flat_json(l: list[tuple], R: list, i: int=0) -> None:
     if i == 0 and len(R) < 1:
         _flat_tree(l)
         _multiply_tree(l, R)
