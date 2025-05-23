@@ -1,10 +1,14 @@
-from requests import Request
+
+
+from requests import (
+    Request,
+    PreparedRequest
+)
 
 # TODO:
     # docstring properly
     # handle exceptions
-    # test properly
-    # use http module instead of requests
+    # tests
 
 
 def _params_url(url : str, params : dict) -> str:
@@ -53,9 +57,9 @@ def _queries_url(url : str, queries : dict) -> str:
 
 
 # construct request 
-def init_request(method : str, base_url : str, path : str, header : dict, 
+def init_req(method : str, base_url : str, path : str, header : dict, 
                  params : dict | None = None, queries : dict | None = None,
-                 payload : dict | None= None) -> Request:
+                 payload : dict | None= None) -> PreparedRequest:
     """Initialization of parameters used in data requests, basically, url structuring.
     Parse possible url params and queries to structure url string and return a Request
     object to be prepared in a Session request.
@@ -80,9 +84,9 @@ def init_request(method : str, base_url : str, path : str, header : dict,
         full_path = _queries_url(full_path, queries)
 
     if method == "POST":
-        return Request("POST", url=full_path, headers=header, json=payload)
+        return Request("POST", url=full_path, headers=header, json=payload).prepare()
 
-    return Request("GET", url=full_path, headers=header)
+    return Request("GET", url=full_path, headers=header).prepare()
 
 
 if __name__ == "__main__":
@@ -103,6 +107,6 @@ if __name__ == "__main__":
 
     base_url = "https://api.com/v0/"
     path = "endpoint/:id/path/:name"
-    request = init_request("GET", base_url, path, header, params, queries)
+    request = init_req("GET", base_url, path, header, params, queries)
     print(request)
 

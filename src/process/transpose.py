@@ -1,6 +1,7 @@
 
 # TODO:
 #   Validate if every row have the same number of elements
+#       If doesn't, fill with null values
 #   Test properly
 
 from ..utils.logger_config import SLOG

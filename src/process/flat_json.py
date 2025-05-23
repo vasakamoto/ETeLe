@@ -11,10 +11,6 @@ import os
 #   * Make tests
 
 
-# Matrix to store the json "rows"
-R = []
-
-
 def _flat_tree(l: list[tuple], i: int=0) -> None:
     """Destructure a nested tree from a list of tuples *l* obtained from an 
     dict_items into a flattened tree. The index *i* is used to traverse the tree.
@@ -43,8 +39,7 @@ def _flat_tree(l: list[tuple], i: int=0) -> None:
         return
 
 
-
-def _multiply_tree(l: list[tuple], R: list[list], i: int=0):
+def _multiply_tree(l: list[tuple], R: list[list], i: int=0) -> None:
     """Search for arrays in the tree, if an array with n elements *e* is found, multiply 
     multiply the tree by n.
     """
@@ -149,6 +144,7 @@ if __name__ == "__main__":
     }
 
 
+    R = []
     l = list(jason.items())
     flat_json(l, R)
     for r in R[:-11]:
