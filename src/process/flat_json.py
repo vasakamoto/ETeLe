@@ -1,9 +1,6 @@
-"""Flattening of an entire json with nested arrays and objects in it. The thought 
+"""Flattening of a json element with nested arrays and objects in it. The thought 
 process is to structure the json into a tabular format.
 """
-
-import json
-import os
 
 # TODO
 #   * Wrap everything properly
@@ -78,6 +75,10 @@ def flat_json(l: list[tuple], R: list, i: int=0) -> None:
     _flat_tree(R[i])
     _multiply_tree(R[i], R)
     flat_json(R[i], R, i+1)
+
+
+def _flat_treev2(j : dict, d : int):
+
 
 
 if __name__ == "__main__":
