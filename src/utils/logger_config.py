@@ -11,7 +11,7 @@ LOGGING_CONFIG = {
     'disable_existing_loggers': True,
     'formatters': { 
         'console': { 
-            'format': '\n[%(levelname)s - %(asctime)s] \n %(message)s'
+            'format': '___________________________________________________________\n\n[%(levelname)s - %(asctime)s] \n %(message)s\n\n'
         },
         'file': { 
             'format': '%(levelname)s | %(asctime)s | %(message)s'
